@@ -1,4 +1,16 @@
+/** 
+ * 图结构 
+ * 最短路径 
+ * 最大通路
+ */
 define(["Module"],function(Module) {
+    /**
+     * 图的节点
+     * @param {[type]} 节点在所有顶点中的位置  [description]
+     * @param {[type]} 节点在原数据中的横坐标  [description]
+     * @param {[type]} 节点在原数据中的横坐标   [description]
+     * @param {[type]} val [description]
+     */
     function Node(id, x, y, val) {
         this._id = id; //顶点id
         this._x = x; //顶点x坐标
@@ -70,13 +82,6 @@ define(["Module"],function(Module) {
                 }
             }
         }
-    }
-    /**
-     * 生成树结构
-     * @return {[type]} [description]
-     */
-    _p.getTree = function() {
-        return this._tree;
     }
     /**
      * 判断是否有路径 两节点相邻 并且值为1则有路径
@@ -202,7 +207,7 @@ define(["Module"],function(Module) {
         }
     }
     /**
-     * 获取包围后的路径
+     * 获取包围后的路径 最大通路算法
      * @param  {[type]} startNode [description]
      * @return {[type]}           [description]
      */
@@ -234,7 +239,9 @@ define(["Module"],function(Module) {
         return false;
     }
     /**
-     * 获取所有的路径
+     * 获取所有的路径  
+     * 最短路径从边界往前直到顶点
+     * 最大通路从叶子节点往前直到顶点
      * @param  {[type]} node [description]
      * @return {[type]}      [description]
      */

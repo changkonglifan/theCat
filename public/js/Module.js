@@ -19,7 +19,12 @@ define([],function(){
 		this._isWin = false;//是否胜利
 	}
 	var _p = Module.prototype;
-
+	/**
+	 * 枚举类型
+	 * 游戏中的状态 
+	 * 游戏点的状态
+	 * @type {Number}
+	 */
 	Module.LOADING = 0;//加载中
 	Module.START = 1;//开始游戏
 	Module.PLAYING = 2;//游戏中
@@ -37,13 +42,11 @@ define([],function(){
 	 */
 	_p.initData = function(){
 		for(var i = 0 ;i < this._cells; i ++){
-			this._data[i] = [];
+			this._data[i] = [];//二位矩阵
 			for(var j = 0;j < this._cells;j ++){
 				this._data[i][j] = {
-					val : Module.EMPTY,
-					img : null
+					val : Module.EMPTY
 				}
-				
 			}
 		}
 	}
@@ -83,7 +86,7 @@ define([],function(){
 		return this._cells;
 	}
 	/**
-	 * 获取数据
+	 * 获取数据矩阵
 	 * @return {[type]} [description]
 	 */
 	_p.getData = function (){
@@ -126,7 +129,7 @@ define([],function(){
 		return this._catPoint;
 	}
 	/**
-	 * 设置个数
+	 * 设置初始化最大 full节点
 	 * @param {[type]} num [description]
 	 */
 	_p.setFullNums = function(num){

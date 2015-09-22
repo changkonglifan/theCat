@@ -1,3 +1,9 @@
+/**
+ * 图形绘制相关操作
+ * @param  {[type]} Module                [description]
+ * @param  {[type]} Resource){		function Renderer(canvas,module){		this._canvas [description]
+ * @return {[type]}                       [description]
+ */
 define(["Module","Resource"],function(Module,Resource){
 	/**
 	 * 绘制游戏界面
@@ -99,14 +105,6 @@ define(["Module","Resource"],function(Module,Resource){
 		x = j % 2 == 0 ? x : x + radius;
 		var y = j * radius * 2 - 4;
 		ctx.drawImage(img,0,0,img.width,img.height,x,y,radius * 2,radius * 2);
-
-		// //绘制猫
-		// var catPos = this._module.getCatPoint();
-		// if(i == catPos.x && j == catPos.y ){
-		// 	//绘猫
-		// 	this._drawCat(x,y);
-		// }	
-
 	}
 	/**
 	 * 画那只猫
@@ -192,7 +190,6 @@ define(["Module","Resource"],function(Module,Resource){
 			return; 
 		}
 		//清除背景
-		
 		this._reorient(ctx);
 	}
 	/**

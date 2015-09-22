@@ -48,7 +48,7 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 	_p.loadComplete = function(){
 		this._render.draw_bg();//绘制背景
 		this._setFullData();
-		this._render.draw_playing(Module.PLAYING);
+		this._render.draw_playing();
 		this._render.draw_start();//绘制开始界面
 	}
 	/**
@@ -101,35 +101,27 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 		else{
 			this._module.setData(Module.FULL,pos.row,pos.col);//设置点击的点为选中点
 			this._initNodes();
-			var status = this._module.getCover() ? this._getCoverPath() : this._getPaths();//获取猫的可行路径
+			var status = this._module.getCover() ? this._getCoverPath() : this._getPaths();//获取猫的可行路径 如果是被包围了就获取最大通路  否则 获取最短路径
 			if(status.status == Module.COVER){
 				//被围住
 				this._module.setCover(true);//猫被围住了
-				this._module.setStuats(Module.COVER);
+				this._module.setStuats(Module.COVER);//设置当前状态
 				//更新猫的位置
 				this._refreshCat(this._getCoverPath().minPath);
-
-				this._render.draw_playing();//绘制新的游戏界面
 			}
-			else if(status.status == Module.GAMEOVER){
-				if(this._module.getCover()){
+			else if(status.status == Module.GAMEOVER){//游戏结束状态
+				if(this._module.getCover()){//如果是被包围后结束 则赢
 					this._module.setWin(true);
 				}
-				else{
+				else{//否则输掉游戏
 					this._module.setWin(false);
 				}
-				this._module.setStuats(Module.GAMEOVER);
-				this._render.draw_gameOver();
+				this._module.setStuats(Module.GAMEOVER);//设置状态 GameOver
+				this._render.draw_gameOver();//绘制游戏结束
 			}
 			else {
 				//更新猫的位置
-				this._refreshCat(status.minPath);
-				if(x == 0 || y == 0 || x == this._module.getCells() - 1 || y == this._module.getCells() - 1){
-					//到边界了，游戏结束
-					this._module.setStuats(Module.GAMEOVER);
-					this._module.setWin(false);
-					this._render.draw_gameOver();//绘制游戏结束
-				}
+				var newPos = this._refreshCat(status.minPath);
 				this._render.draw_playing();//绘制新的游戏界面
 			}
 		}
@@ -143,6 +135,12 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 		var newPoint = minPath[minPath.length - 1].node;
 		var x = newPoint.getPosition().x,y = newPoint.getPosition().y;
 		this._module.setCatPoint(x,y);//新猫位置
+		if(x == 0 || y == 0 || x == this._module.getCells() - 1 || y == this._module.getCells() - 1){
+			//到边界了，游戏结束
+			this._module.setStuats(Module.GAMEOVER);
+			this._module.setWin(false);
+			this._render.draw_gameOver();//绘制游戏结束
+		}
 	}
 	/**
 	 * 重绘页面
@@ -161,6 +159,7 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 			case Module.START:
 				this._render.clearCanvas();//清空画布
 				this._render.draw_bg();
+				this._render.draw_playing();//更新游戏状态
 				this._render.draw_start();
 				break;
 			case Module.PLAYING:

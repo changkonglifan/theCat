@@ -1,4 +1,13 @@
+/**
+ * 随机数据相关
+ * @param  {[type]} ){	function Ran(module){		this._module [description]
+ * @return {[type]}              [description]
+ */
 define([],function(){
+	/**
+	 * 随机数
+	 * @param {[type]} module [description]
+	 */
 	function Ran(module){
 		this._module = module;
 	}
