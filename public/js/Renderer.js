@@ -246,7 +246,7 @@ define(["Module","Resource"],function(Module,Resource){
 		ctx.drawImage(imgOver,0,0,imgOver.width,imgOver.height,this._canvas.width * 0.05,this._canvas.height * 0.15,width,imgOver.height * width / imgOver.width);
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.font="24px";
+		ctx.font="36px";
 		ctx.fillStyle = "red";
 		ctx.fillText(txt,this._canvas.width / 2,this._canvas.height * 0.15 + imgOver.height * width / imgOver.width * 0.6);
 		ctx.drawImage(imgShare,0,0,imgShare.width,imgShare.height,this._canvas.width * 0.05 ,this._canvas.height * 0.65 + 10,(width/2 - 10),imgShare.height * (width/2 -10) / imgShare.width);//分享按钮
