@@ -75,6 +75,15 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 			this._gamePlaying(x,y);
 			this._module.setStep();//游戏执行的步数添加
 		}
+		if(status == Module.GAMEOVER){
+			//重新开始 
+			var rePlay = Resource.IMAGES[5].img;
+			var btnWidth = rePlay.width,btnHeight = rePlay.height;
+			if(x < this._canvas.width * 0.9 && x > this._canvas.width - (this._canvas.width * 0.9 / 2 - 10) 
+				&& y > this._canvas.height * 0.65 + 10 && y < this._canvas.height * 0.65 + 10 + btnHeight *(this._canvas.width/2 - 10)/btnWidth ){
+				this._replay();//游戏重新开始
+			}
+		}
 	}
 	/**
 	 * 点击节点 更新节点 更新猫的位置
@@ -97,6 +106,9 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 				//被围住
 				this._module.setCover(true);//猫被围住了
 				this._module.setStuats(Module.COVER);
+				//更新猫的位置
+				this._refreshCat(this._getCoverPath().minPath);
+
 				this._render.draw_playing();//绘制新的游戏界面
 			}
 			else if(status.status == Module.GAMEOVER){
@@ -110,10 +122,9 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 				this._render.draw_gameOver();
 			}
 			else {
-				var newPoint = status.minPath[status.minPath.length - 1].node;
-				var x = newPoint.getPosition().x,y = newPoint.getPosition().y;
-				this._module.setCatPoint(x,y);//新猫位置
-				if(x == 0 || y == 0 || x == this._module.getCells() - 1 || y == this._module.getCells()){
+				//更新猫的位置
+				this._refreshCat(status.minPath);
+				if(x == 0 || y == 0 || x == this._module.getCells() - 1 || y == this._module.getCells() - 1){
 					//到边界了，游戏结束
 					this._module.setStuats(Module.GAMEOVER);
 					this._module.setWin(false);
@@ -122,6 +133,16 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 				this._render.draw_playing();//绘制新的游戏界面
 			}
 		}
+	}
+	/**
+	 * 更新猫的位置
+	 * @param  {[type]} minPath [description]
+	 * @return {[type]}         [description]
+	 */
+	_p._refreshCat = function(minPath){
+		var newPoint = minPath[minPath.length - 1].node;
+		var x = newPoint.getPosition().x,y = newPoint.getPosition().y;
+		this._module.setCatPoint(x,y);//新猫位置
 	}
 	/**
 	 * 重绘页面
@@ -241,6 +262,24 @@ define(["Renderer","Module","Resource","Random","Graph"],function(Renderer,Modul
 			return b.length - a.length;
 		})
 		return sortPath[0];
+	}
+	/**
+	 * 重新开始游戏
+	 * @return {[type]} [description]
+	 */
+	_p._replay = function(){
+		this._module = new Module();//模型
+		this._render.clear();//清空
+		this._render = new Renderer(this._canvas,this._module);//渲染器
+		this._resource = new Resource();//资源文件
+		this._ran = new Ran(this._module);//随机算法
+		this._module.setComplete(true);
+		this._module.setStuats(Module.START);//初始化状态
+		this.resize();//初始化
+		//设置数据
+		this._setFullData();
+		this._render.draw_playing(Module.PLAYING);//绘制开始游戏界面
+		this._render.draw_start();//绘制开始界面
 	}
 	return Game;
 })

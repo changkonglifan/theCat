@@ -18,7 +18,13 @@ define(["Module","Resource"],function(Module,Resource){
 	}
 
 	_p = Renderer.prototype;//原型
-
+	/**
+	 * [clear description]
+	 * @return {[type]} [description]
+	 */
+	_p.clear = function(){
+		clearInterval(this._catInterval);
+	}
 	/**
 	 * 加载中
 	 * @return {[type]} [description]
@@ -208,7 +214,7 @@ define(["Module","Resource"],function(Module,Resource){
 	 * @return {[type]} [description]
 	 */
 	_p.clearCanvas = function(){
-		this._ctx.clearRect(0,0,this._width,this._height);
+		this._ctx.clearRect(0,0,this._canvas.width,this._canvas.height);
 	}
 	/**
 	 * 游戏点击后

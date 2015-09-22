@@ -24,7 +24,7 @@ define(["Game"],function(Game){
 		if(isTouchDevice()){
 			this._canvas.addEventListener("touchend",function(e){
 				var touch = event.targetTouches[0];
-				that._game.handleClick(touch.pageX,touch.pageY);
+				that._game.handleClick(touch.pageX - that._canvas.offsetLeft,touch.pageY);
 				e.stopPropagation();
 				e.preventDefault();
 			},false);
